@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>Patient name: {{prescription.patient}}</p>
+    <p>Prescription diagnosis: {{prescription.diagnosis}}</p>
+    <p>Prescription note: {{prescription.note}}</p>
+    <table class="table">
+        <thead>
+            <th>Medicine id</th>
+            <th>Medicine name</th>
+            <th>Medicine usage</th>
+            <th>Number</th>
+        </thead>
+        {% for detail in prescription.prescriptiondetail_set.all %}
+        <tr>
+            <td>{{detail.medicine.id}}</td>
+            <td>{{detail.medicine.name}}</td>
+            <td>{{detail.usage}}</td>
+            <td>{{detail.number}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+{% endblock %}

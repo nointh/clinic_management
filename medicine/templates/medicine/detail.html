@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>Medicine id: {{ medicine.id }}</p>
+    <p>Medicine name: {{ medicine.name }}</p>
+    <p>Medicine origin price: {{ medicine.origin_price }}</p>
+    <p>Medicine sale price: {{ medicine.sale_price }}</p>
+    <p>Dose per day: {{ medicine.dose_per_day }}</p>
+    <p>Default usage: {{ medicine.usage }}</p>
+    <p>Stock quantity: {{ medicine.stock_quantity }}</p>
+    <p>Unit: {{ medicine.unit }}</p>
+    <p>Medicine type: {{ medicine.medicine_type.name }}</p>
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>Patient name: {{invoice.patient}}</p>
+    <p>Create at: {{invoice.created_at|date:'d/m/Y'}}</p>
+    <p>Total: {{invoice.total}}</p>
+    <table class="table">
+        <thead>
+            <th>Medicine id</th>
+            <th>Medicine name</th>
+            <th>Medicine unit price</th>
+            <th>Quantity</th>
+            <th>Line total</th>
+        </thead>
+        {% for detail in invoice.invoicedetail_set.all %}
+        <tr>
+            <td>{{detail.medicine.id}}</td>
+            <td>{{detail.medicine.name}}</td>
+            <td>{{detail.unit_price}}</td>
+            <td>{{detail.quantity}}</td>
+            <td>{{detail.get_line_total}}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+{% endblock %}

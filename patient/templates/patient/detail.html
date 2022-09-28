@@ -1,0 +1,19 @@
+
+{% extends 'base.html' %}
+<!-- {% block content %} -->
+<h1>This is patient with id {{ patient.id }}</h1>
+<p>Patient name: {{ patient.name }}</p>
+<p>Patient birth year: {{ patient.age }}</p>
+<p>Patient gender: {{ patient.gender }}</p>
+<p>Patient address: {{ patient.address }}</p>
+<!-- <a id="back">back</a>
+<a href='{% url "patient:detail" patient.id|add:1 %}'>next</a> -->
+<!-- {% endblock %} -->
+<!-- {% block script %}
+<script>
+    backBtn = document.getElementById('back')
+    backBtn.addEventListener('click', () => {
+        window.history.back()
+    })
+</script>
+{% endblock %} -->
