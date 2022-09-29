@@ -20,11 +20,12 @@ from django.views.generic.base import TemplateView # new
 
 
 urlpatterns = [
-    path('patient/', include('patient.urls')),
-    path('medicine/', include('medicine.urls')),
-    path('prescription/', include('prescription.urls')),
-    path('invoice/', include('invoice.urls')),
+    # path('patient/', include('patient.urls')),
+    # path('medicine/', include('medicine.urls')),
+    # path('prescription/', include('prescription.urls')),
+    # path('invoice/', include('invoice.urls')),
     path('report/', include('report.urls')),
+    path('', include('clinic_management.urls')),
     path('api/', include('api.urls')),
     path('superuser/', admin.site.urls),
     path('login/', auth_views.LoginView.as_view(), name='login'),

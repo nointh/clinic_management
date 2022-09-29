@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 from base.models import SoftDeleteAbstractModel
+from account.models import User
 # Create your models here.
 class Patient(SoftDeleteAbstractModel):
     class Gender(models.TextChoices):
@@ -52,7 +53,7 @@ class Prescription(SoftDeleteAbstractModel):
     modified_at = models.DateTimeField(auto_now=True)
     diagnosis = models.CharField(max_length=300)
     note = models.CharField(max_length=300, blank=True, null=True)
-    # medicines = models.ManyToManyField(Medicine)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     medicines = models.ManyToManyField(Medicine, through="PrescriptionDetail", through_fields=['prescription','medicine'])
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
     def __str__(self) -> str:
@@ -74,6 +75,7 @@ class Invoice(SoftDeleteAbstractModel):
     modified_at = models.DateTimeField(auto_now=True)
     medicines = models.ManyToManyField(to=Medicine, through='InvoiceDetail', through_fields=['invoice', 'medicine'])
     patient = models.ForeignKey(Patient, on_delete=models.CASCADE)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     total = models.FloatField(default=0)
 
     def __str__(self) -> str:

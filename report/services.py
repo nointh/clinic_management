@@ -1,7 +1,6 @@
 from collections import defaultdict
 from datetime import datetime
-from invoice.models import Invoice, InvoiceDetail
-from prescription.models import Prescription
+from clinic_management.models import Prescription, Invoice, InvoiceDetail
 from django.db.models import Count, Sum, Avg
 from itertools import chain 
 

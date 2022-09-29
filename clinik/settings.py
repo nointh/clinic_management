@@ -38,14 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'xhtml2pdf',
-    'patient',
-    'medicine',
+    # 'patient',
+    # 'medicine',
+    # 'account',
+    # 'prescription',
+    # 'invoice',
     'account',
-    'prescription',
-    'invoice',
     'report',
     'api',
-    'base'
+    'base',
+    'clinic_management',
 ]
 
 MIDDLEWARE = [
@@ -126,8 +128,8 @@ USE_THOUSAND_SEPARATOR = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATIC_ROOT = BASE_DIR / "static"
-STATICFILES_DIRS = [ ('patient', BASE_DIR / "patient/static/patient") ]
+# STATIC_ROOT = BASE_DIR / "static"
+STATICFILES_DIRS = [ BASE_DIR / "static" ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 

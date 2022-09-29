@@ -9,10 +9,10 @@ class User(AbstractUser):
         DOCTOR = 'doctor'
         ASSISTANT = 'assistance'
     objects = CustomUserManager()
-    # name = models.CharField(max_length=100)
-    # email = models.CharField(max_length=100, blank=True, null=True)
+    name = models.CharField(max_length=100)
+    email = models.EmailField(blank=True, null=True)
 
-    # phone = models.CharField(max_length=30, blank=True, null=True)
+    phone = models.CharField(max_length=30, blank=True, null=True)
     role = models.CharField(max_length=20,
                     choices=UserRole.choices,
                     default=UserRole.BASE)

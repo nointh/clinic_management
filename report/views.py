@@ -3,8 +3,6 @@ from django.shortcuts import render
 from django.views import View
 from django.utils import timezone
 from django.db.models import Avg, Sum, Count
-from invoice.models import Invoice
-from prescription.models import Prescription
 from report.services import ReportService
 # Create your views here.
 class GeneralReportView(View):
