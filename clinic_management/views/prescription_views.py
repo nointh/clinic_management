@@ -163,20 +163,22 @@ class PrescriptionPrintView(RoleRequiredMixin, View):
         template = get_template('pdf/prescription_pdf.html')
         html  = template.render(context)
         result = io.BytesIO()
-        pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), result)
+        # pdf = pisa.pisaDocument(io.BytesIO(html.encode("UTF-16")), result)
+        pdf = pisa.pisaDocument(io.BytesIO(html.encode("utf-8")), result, encoding='utf-8')
+        print(pdf)
         if not pdf.err:
-            return HttpResponse(result.getvalue(), content_type='application/pdf')
+            return HttpResponse(result.getvalue(), content_type='application/pdf; encoding="utf-8"')
         return None
     
-class PdfView(View):
-    def get(self, request, pk) -> Dict[str, Any]:
-        prescription = Prescription.objects.get(pk=pk)
-        context = { 'prescription': prescription}
-        template = get_template('pdf/prescription_pdf.html')
-        html  = template.render(context)
-        result = io.BytesIO()
-        pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1")), result)
-        if not pdf.err:
-            return HttpResponse(html)
-        return None
+# class PdfView(View):
+#     def get(self, request, pk) -> Dict[str, Any]:
+#         prescription = Prescription.objects.get(pk=pk)
+#         context = { 'prescription': prescription}
+#         template = get_template('pdf/prescription_pdf.html')
+#         html  = template.render(context)
+#         result = io.BytesIO()
+#         pdf = pisa.pisaDocument(io.BytesIO(html.encode("ISO-8859-1", 'ignore')), result)
+#         if not pdf.err:
+#             return HttpResponse(html)
+#         return None
 

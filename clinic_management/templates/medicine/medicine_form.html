@@ -1,4 +1,11 @@
 {% extends "base.html" %}
+{% block style %}
+<style>
+  .is-invalid{
+    border-color: #dc3545;
+  }
+</style>
+{% endblock %}
 {% block content %}
 
 
@@ -11,9 +18,9 @@
     <div class="card-body">
       <p class="card-text">
         {% if action == 'edit' %}
-          <form action="{% url 'clinic_management:medicine_edit' pk %}" method="post">
+          <form action="{% url 'clinic_management:medicine_edit' pk %}" method="post" class=" needs-validation">
         {% else %}
-          <form action="{% url 'clinic_management:medicine_create' %}" method="post">
+          <form action="{% url 'clinic_management:medicine_create' %}" method="post" class=" needs-validation">
 
         {% endif %}
 
@@ -26,4 +33,95 @@
   </div>
 </div>
   
+{% endblock %}
+
+
+{% block script %}
+<script>
+  
+  function validateField(formElement, fieldElement, inputNode) {
+    let formData = new FormData(formElement);
+    formData.append('__field_name__', fieldElement.name);
+      console.log(formData)
+    fetch('/api/medicine/validate', 
+    {
+      body: formData,
+      method: "post"
+    }
+    ).then(res => res.json())
+    .then(function (data) {
+      console.log(data)
+      let errors = data.errors;
+      // console.log(errors)
+      fieldWrapperNode = inputNode.parentNode
+      fieldWrapperNode.classList.add('was-validated')
+      errorsWrapperElement = fieldWrapperNode.getElementsByClassName('invalid-feedback')
+      if (! errorsWrapperElement.length){
+        errorsWrapperElement = document.createElement('div')
+        errorsWrapperElement.classList = 'invalid-feedback mt-0'
+      }
+      else {
+        errorsWrapperElement = errorsWrapperElement[0]
+      }
+      if (errors.length === 0) {
+        inputNode.setCustomValidity('')
+        if (errorsWrapperElement) {
+          errorsWrapperElement.innerHTML = "";
+        }
+        inputNode.classList.remove('is-invalid');
+        inputNode.classList.add('is-valid');
+      } else {
+        if (errorsWrapperElement) {
+          let errorsHtml = '';
+          let errorsText = ''
+          for (let i = 0; i < errors.length; i++) {
+            errorsHtml += `${errors[i]}`;
+            errorsText += `${errors[i]}\n`
+          }
+          inputNode.setCustomValidity(errorsText)
+          
+          errorsWrapperElement.innerHTML = errorsHtml;
+        }
+        fieldWrapperNode.append(errorsWrapperElement)
+        inputNode.classList.remove('is-valid');
+        inputNode.classList.add('is-invalid');
+        
+      }
+    });
+  }
+
+function initFormValidation() {
+  document.querySelectorAll("form").forEach(function (formElement) {
+    formElement.querySelectorAll("[name]").forEach(fieldElement => {
+      fieldElement.addEventListener("change", event => {
+        console.log(event.target.parentNode)
+        validateField(formElement, fieldElement, event.target);
+      });
+    });
+  });
+}
+
+(() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+    initFormValidation()
+
+  })
+})()
+
+
+</script>
 {% endblock %}

@@ -10,7 +10,7 @@
     {{ form.as_div }}
     <div id="invoice-detail-list">
     </div>
-    <div onclick="fetchData()">add medicine </div>
+    <div onclick="fetchData()" class="btn btn-info">add medicine </div>
     <div>Total = <span id="invoice-total">{% if form.total %} {{ form.total }} {% else %} 0 {% endif %}</span> <input type="hidden" name="total"></div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>
@@ -243,7 +243,7 @@
                 'name': '{{ detail.medicine.name }}',
                 'quantity': '{{ detail.quantity }}',
                 'unit': '{{ detail.medicine.unit }}',
-                'sale_price': '{{ detail.unit_price }}'.replace(',', '')              
+                'sale_price': '{{ detail.unit_price }}'.replace(',', '')
             }))
         {% endfor %}
 

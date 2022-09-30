@@ -32,7 +32,7 @@ urlpatterns = [
     path('prescription/create', PrescriptionCreateView.as_view(), name="prescription_create"),
     path('prescription/<int:pk>/delete', PrescriptionDeleteView.as_view(), name="prescription_delete"),
     path('prescription/<int:pk>/edit', PrescriptionEditView.as_view(), name="prescription_edit"),
-    path('prescription/<int:pk>/edit', PrescriptionPrintView.as_view(), name="prescription_print"),
+    path('prescription/<int:pk>/print', PrescriptionPrintView.as_view(), name="prescription_print"),
 
 
 

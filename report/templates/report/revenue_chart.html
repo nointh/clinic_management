@@ -38,7 +38,7 @@
                         {% for row in data %}
                             {
                             x: '{{row.created_at__date|date:"Y-m-d"}} 00:00:00',
-                            y: {{row.total}}
+                            y: parseFloat("{{row.total}}".replace(',', ''))
                             },
                         {% endfor %}
                     ]
@@ -50,6 +50,9 @@
                         min: '{{min|date:"Y-m-d"}} 00:00:00',
                         // max: '{{max|date:"Y-m-d"}} 00:00:00',
                         // min: '2022-09-01 00:00:00',
+                    },
+                    y: {
+                        beginAtZero: true
                     }
                 }
             }
