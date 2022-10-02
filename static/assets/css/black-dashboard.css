@@ -2578,10 +2578,13 @@ a[data-toggle="collapse"][aria-expanded="true"] .caret,
   -webkit-overflow-scrolling: touch;
 }
 
-.card form label+.form-control {
+/* .card form label+.form-control {
+  margin-bottom: 20px;
+} */
+
+.card form div:has(.form-control) {
   margin-bottom: 20px;
 }
-
 .offline-doc .page-header:before {
   background: rgba(0, 0, 0, 0.75);
 }
