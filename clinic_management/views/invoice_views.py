@@ -1,6 +1,7 @@
 from typing import Dict, Any, Optional
 
 from django.contrib import messages
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic.list import ListView
@@ -69,7 +70,26 @@ class InvoiceCreateView(RoleRequiredMixin, View):
     model = Invoice
     def get(self, request):
         form = InvoiceCreateOrEditForm()
-        return render(request, 'invoice/invoice_form.html', {'form': form }) 
+        patient_id = request.GET.get('patient')
+        prescription_id = request.GET.get('prescription')
+        service = InvoiceService()
+
+        if patient_id:
+            empty_invoice = service.get_empty_invoice_with_patient_id(patient_id)
+            if not empty_invoice:
+                raise Http404
+            form = InvoiceCreateOrEditForm(instance=empty_invoice)
+        
+        if prescription_id:
+            empty_invoice, invoice_details = service.get_empty_invoice_and_details_from_prescription_id(prescription_id)
+            form = InvoiceCreateOrEditForm(instance=empty_invoice)
+            if not empty_invoice or not invoice_details:
+                raise Http404
+            return render(request, 'invoice/invoice_form.html', {'form': form, 'details': invoice_details})
+
+         
+
+        return render(request, 'invoice/invoice_form.html', {'form': form })
 
     def post(self, request):
         form = InvoiceCreateOrEditForm(request.POST)
@@ -77,9 +97,6 @@ class InvoiceCreateView(RoleRequiredMixin, View):
         medicine_ids = [i for i in request.POST.getlist('medicine-ids')]
         medicine_quantities = [i for i in request.POST.getlist('medicine-quantities')]
         medicine_prices = [i for i in request.POST.getlist('medicine-unit-prices')]
-        print(medicine_ids)
-        print(medicine_quantities)
-        print(medicine_prices)
         service = InvoiceService()
         username = request.user.username
         if service.create_invoice_and_detail(form, username, medicine_ids=medicine_ids, \

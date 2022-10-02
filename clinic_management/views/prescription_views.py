@@ -1,6 +1,6 @@
 from typing import Any, Dict, Optional
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
+from django.http import Http404, HttpRequest, HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
@@ -19,7 +19,7 @@ from xhtml2pdf import pisa
 from account.mixins import RoleRequiredMixin
 from account.models import User
 
-from clinic_management.models import Prescription, PrescriptionDetail
+from clinic_management.models import Patient, Prescription, PrescriptionDetail
 from clinic_management.forms.prescription_forms import PrescriptionForm
 from clinic_management.services.prescription_services import PrescriptionService
 # Create your views here.
@@ -82,8 +82,14 @@ class PrescriptionCreateView(RoleRequiredMixin, View):
     model = Prescription
     def get(self, request):
         form = PrescriptionForm()
-        print(request.user.role)
-        print(self.roles_required)
+        patient_id = request.GET.get('patient')
+        service = PrescriptionService()
+        if patient_id:
+            prescription = service.get_empty_prescription_with_patient_id(patient_id)
+            if not prescription:
+                raise Http404 
+            form = PrescriptionForm(instance=prescription)
+
         return render(request, 'prescription/prescription_form.html', {'form': form }) 
 
     def post(self, request):

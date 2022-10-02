@@ -1,5 +1,5 @@
 from account.models import User
-from clinic_management.models import Medicine, Invoice, InvoiceDetail
+from clinic_management.models import Medicine, Invoice, InvoiceDetail, Patient, Prescription
 from clinic_management.forms.invoice_forms import InvoiceCreateOrEditForm
 
 
@@ -13,7 +13,33 @@ class InvoiceService:
     def __init__(self) -> None:
         pass
 
-    
+    def get_empty_invoice_with_patient_id(self, patient_id: int| str):
+        '''
+            Get empty instance of invoice which is used for creating new invoice for a patient
+        '''
+        try:
+            return Invoice(patient=Patient.objects.get(pk=patient_id))
+        except Patient.DoesNotExist:
+            return None
+    def get_empty_invoice_and_details_from_prescription_id(self, prescription_id: int|str):
+        '''
+            Get empty instance of invoice which is used for creating new invoice base on existing prescription
+        '''
+        try:
+            prescription = Prescription.objects.get(pk=prescription_id)
+            invoice = Invoice(created_by=prescription.created_by, patient=prescription.patient)
+            details = []
+            for detail in prescription.prescriptiondetail_set.all():
+                result = InvoiceDetail(\
+                    medicine=detail.medicine,\
+                    quantity=detail.number,\
+                    unit_price=detail.medicine.sale_price)
+                details.append(result)
+            return invoice, details
+        except Prescription.DoesNotExist:
+            return None
+
+
     def is_invoice_detail_valid(self, medicine_ids, medicine_quanties, medicine_prices) -> bool:
         return len(medicine_ids) == len(medicine_quanties)\
             and len(medicine_quanties) == len(medicine_prices) \
@@ -27,7 +53,7 @@ class InvoiceService:
             invoice.save()
             total = 0
             for i in range(len(medicine_ids)):
-                total += int(medicine_quantities[i]) * int(medicine_prices[i])
+                total += int(medicine_quantities[i]) * float(medicine_prices[i])
                 invoice_detail = InvoiceDetail(medicine=Medicine.objects.get(pk=medicine_ids[i]),\
                     invoice=invoice,\
                     quantity=int(medicine_quantities[i]),\

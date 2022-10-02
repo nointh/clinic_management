@@ -1,11 +1,16 @@
-from clinic_management.models import PrescriptionDetail, Medicine, Prescription
+from clinic_management.models import PrescriptionDetail, Medicine, Prescription, Patient
 from clinic_management.forms.prescription_forms import PrescriptionForm
 from account.models import User
 class PrescriptionService:
     def __init__(self) -> None:
         pass
 
-    
+    def get_empty_prescription_with_patient_id(self, patient_id: int | str):
+        try:
+            return Prescription(patient=Patient.objects.get(pk=patient_id))
+        except Patient.DoesNotExist:
+            return None
+            
     def is_prescription_detail_valid(self, medicine_ids, medicine_numbers, medicine_usages) -> bool:
         return len(medicine_ids) == len(medicine_numbers)\
             and len(medicine_numbers) == len(medicine_usages) \

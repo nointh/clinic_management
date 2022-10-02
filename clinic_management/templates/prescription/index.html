@@ -178,14 +178,7 @@
             myModal.toggle()
             idInput = document.getElementById('delete-form')
             idInput.action = "{% url 'clinic_management:prescription_delete' 0%}".replace(0, id)
-            // fetch('delete/' + id)
-            // .then(res => {
-            //     if (res.status == 200)
-            //         medicineDiv = document.getElementById('medicine'+id)
-            //         medicineDiv.innerHTML = ""
-            //         info = document.getElementById('info-space')
-            //         info.innerHTML = "Delete successfully"
-            // })
+
         }
     </script>
 {% endblock %}

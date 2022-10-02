@@ -96,6 +96,7 @@ class Invoice(SoftDeleteAbstractModel):
         return query_result['total_price']
 
 
+
 class InvoiceDetail(SoftDeleteAbstractModel):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     medicine = models.ForeignKey(Medicine, on_delete=models.CASCADE)
