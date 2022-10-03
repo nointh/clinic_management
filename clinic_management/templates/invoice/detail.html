@@ -31,7 +31,50 @@
                 {% endfor %}
 
             </table>
+            <a href="{% url 'clinic_management:invoice_edit' invoice.id %}" 
+            class="btn btn-primary btn-sm">EDIT</a>
+            <a href="" class="btn btn-danger btn-sm"
+            data-bs-toggle="modal" 
+            onclick="deleteData('{{ invoice.id }}')"> DELETE</a>
+            <a href="{% url 'clinic_management:invoice_print' invoice.id %}"
+            class="btn btn-info btn-sm"> PRINT</a>
+
         </div>
     </div>
 </div>
+
+<div class="modal" id="deleteConfirmation" tabindex="-1">
+    <div class="modal-dialog">
+    <form class="modal-content" id="delete-form" method="post">
+        <div class="modal-header">
+        <h5 class="modal-title">Delete confirmation</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            {% csrf_token %}
+            <input type="hidden" name="pk" id="delete-prescription-id">
+            <p>Are you sure to delete this item?</p>
+        </div>
+        <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Confirm</button>
+        </div>
+    </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    const deleteData = id => {
+        const deleteConfirmation = document.getElementById("deleteConfirmation")
+        var myModal = new bootstrap.Modal(deleteConfirmation)
+        myModal.toggle()
+        idInput = document.getElementById('delete-form')
+        idInput.action = "{% url 'clinic_management:prescription_delete' 0%}".replace(0, id)
+
+    }
+
+</script>
 {% endblock %}

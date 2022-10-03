@@ -34,9 +34,11 @@
             <a href="" class="btn btn-danger btn-sm"
             data-bs-toggle="modal" 
             onclick="deleteData('{{ prescription.id }}')"> DELETE</a>
+            <a href="{% url 'clinic_management:prescription_print' prescription.id %}"
+            class="btn btn-info btn-sm"> PRINT</a>
+
             <a href="{% url 'clinic_management:invoice_create' %}?prescription={{ prescription.id }}"
             class="btn btn-info btn-sm">CREATE AS INVOICE</a>
-
         </div>
     </div>
 </div>

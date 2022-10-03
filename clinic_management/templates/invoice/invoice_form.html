@@ -156,11 +156,11 @@
         
 
         unitPriceDiv = document.createElement('div')
-        unitPriceDiv.className = 'col-5'
+        unitPriceDiv.className = 'col-3'
         unitPriceDiv.append(medicineUnitPriceInput)
 
         quantiyDiv = document.createElement('div')
-        quantiyDiv.className = 'col-1'
+        quantiyDiv.className = 'col-2'
         quantiyDiv.append(quantityInput)
         
 
@@ -169,12 +169,12 @@
         unitDiv.textContent = medicine.unit
 
         lineTotalDiv = document.createElement('div')
-        lineTotalDiv.className = 'col-1 line-total'
+        lineTotalDiv.className = 'col-2 line-total'
         lineTotalDiv.textContent = new Intl.NumberFormat().format(quantityInput.value * medicineUnitPriceInput.value)
 
         deleteDiv = document.createElement('div')
         deleteDiv.className = 'col-1'
-        deleteDiv.textContent = 'X'
+        deleteDiv.innerHTML = '<i class="fa-solid fa-trash"></i>'
         deleteDiv.style.cursor = 'pointer'
         deleteDiv.addEventListener('click', (event) => {
             event.target.parentElement.remove()

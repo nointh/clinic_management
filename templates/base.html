@@ -38,6 +38,19 @@
     {% include 'navbar.html' %}
     <!-- End Navbar -->
       <div class="content">
+        <!-- {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %} role="alert">
+              <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="close">
+                <i class="tim-icons icon-simple-remove"></i>
+              </button>
+              {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+ -->
          {% block content %}
          {% endblock %}
       </div>
@@ -222,6 +235,39 @@
           });
         });
       });
+
+      // notifications
+      type = ['primary', 'info', 'success', 'warning', 'danger'];
+
+      function showNotification(message, tag) {
+        color = Math.floor((Math.random() * 4) + 1);
+
+        $.notify({
+          icon: "tim-icons icon-bell-55",
+          message: message
+
+        }, {
+          type: tag,
+          timer: 8000,
+          placement: {
+            from: 'top',
+            align: 'right'
+          }
+        });
+      }
+      {% if messages %}
+            {% for message in messages %}
+            showNotification('{{message}}', '{{message.tags}}')
+            // <div {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %} role="alert">
+            //   <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="close">
+            //     <i class="tim-icons icon-simple-remove"></i>
+            //   </button>
+            //   {{ message }}
+            // </div>
+            {% endfor %}
+        {% endif %}
+
+      // enable tooltip
       const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
       const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 

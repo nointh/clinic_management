@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.views.generic.edit import DeleteView, UpdateView, CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+from django.db.models import Q
 from account.mixins import RoleRequiredMixin
 from account.models import User
 
@@ -24,8 +25,7 @@ class MedicineListView(RoleRequiredMixin, ListView):
     def get_queryset(self):
         query = self.request.GET.get('q', '')
         object_list = Medicine.objects.filter(
-            name__contains=query,
-            medicine_type__name__contains=query
+            Q(name__contains=query) | Q(medicine_type__name__contains=query)
         )\
         .order_by('name')
         return object_list
@@ -73,4 +73,3 @@ class MedicineCreateView(RoleRequiredMixin, CreateView):
         messages.success(request=self.request, message="Create new medicine successfully")
         return reverse('clinic_management:medicine_index')
 
-    

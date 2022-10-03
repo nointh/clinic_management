@@ -1,12 +1,15 @@
 from typing import Dict, Any, Optional
-
+import io
+from xhtml2pdf import pisa
 from django.contrib import messages
-from django.http import Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse, reverse_lazy
 from django.views.generic.list import ListView
 from django.views.generic.edit import DeleteView
 from django.views import View
+from django.template.loader import get_template
+
 from account.mixins import RoleRequiredMixin
 from account.models import User
 from clinic_management.models import Invoice
@@ -154,3 +157,20 @@ class InvoiceDeleteView(RoleRequiredMixin, DeleteView):
     def get_success_url(self) -> str:
         messages.success(self.request, 'Delete successfully')
         return reverse('clinic_management:invoice_index')
+
+
+
+class InvoicePrintView(RoleRequiredMixin, View):
+    roles_required = [ User.UserRole.BASE ]
+    def get(self, request, pk) -> Dict[str, Any]:
+        invoice = Invoice.objects.get(pk=pk)
+        context = { 'invoice': invoice}
+        template = get_template('pdf/invoice_pdf.html')
+        html  = template.render(context)
+        result = io.BytesIO()
+        # pdf = pisa.pisaDocument(io.BytesIO(html.encode("UTF-16")), result)
+        pdf = pisa.pisaDocument(io.BytesIO(html.encode("utf-8")), result, encoding='utf-8')
+        print(pdf)
+        if not pdf.err:
+            return HttpResponse(result.getvalue(), content_type='application/pdf; encoding="utf-8"')
+        return None

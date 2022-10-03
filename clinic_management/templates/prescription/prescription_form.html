@@ -128,11 +128,11 @@
         
 
         usageDiv = document.createElement('div')
-        usageDiv.className = 'col-5'
+        usageDiv.className = 'col-4'
         usageDiv.append(medicineUsageInput)
 
         dosageDiv = document.createElement('div')
-        dosageDiv.className = 'col-1'
+        dosageDiv.className = 'col-2'
         dosageDiv.append(medicineDosageInput)
 
         unitDiv = document.createElement('div')
@@ -141,7 +141,7 @@
 
         deleteDiv = document.createElement('div')
         deleteDiv.className = 'col-1'
-        deleteDiv.textContent = 'X'
+        deleteDiv.innerHTML = '<i class="fa-solid fa-trash"></i>'
         deleteDiv.style.cursor = 'pointer'
         deleteDiv.addEventListener('click', (event) => {
             event.target.parentElement.remove()
