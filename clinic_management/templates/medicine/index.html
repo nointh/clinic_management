@@ -22,7 +22,10 @@
             </div>
             <div class="card-body">
                 <div class="container d-flex justify-content-between">
-                    <a href="{% url 'clinic_management:medicine_create' %}" class="btn btn-primary">Create new medicine</a>
+                    <div>
+                        <a href="{% url 'clinic_management:medicine_create' %}" class="btn btn-primary">Create new medicine</a>
+                        <a href="{% url 'clinic_management:medicine_type_index'%}" class="btn btn-info">Medicine type page</a>
+                    </div>
                     <form action="{% url 'clinic_management:medicine_index' %}">
                         <label for="search"></label>
                         <input type="text" name="q" id="q" size="15" style="border: 0; border-bottom: 1px solid black; outline: 0;" placeholder="search medicine" value="{{request.GET.q}}">
