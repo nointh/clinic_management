@@ -1,6 +1,6 @@
 from django.urls import path
 from clinic_management.views.patient_views import PatientCreateView, PatientListView, PatientDetailView, PatientEditView, PatientDeleteView
-from clinic_management.views.medicine_views import MedicineListView, MedicineCreateView, MedicineDeleteView, MedicineDetailView, MedicineEditView
+from clinic_management.views.medicine_views import MedicineListView, MedicineCreateView, MedicineDeleteView, MedicineDetailView, MedicineEditView, MedicineTypeCreateView, MedicineTypeDeleteView, MedicineTypeEditView, MedicineTypeListView
 from clinic_management.views.invoice_views import InvoiceListView, InvoiceCreateView, InvoiceDeleteView, InvoiceDetailView, InvoiceEditView, InvoicePrintView
 from clinic_management.views.prescription_views import PrescriptionListView, PrescriptionCreateView, PrescriptionDeleteView, PrescriptionDetailView, PrescriptionEditView, PrescriptionPrintView
 app_name = 'clinic_management'
@@ -18,6 +18,10 @@ urlpatterns = [
     path('medicine/create', MedicineCreateView.as_view(), name="medicine_create"),
     path('medicine/<int:pk>/delete', MedicineDeleteView.as_view(), name="medicine_delete"),
     path('medicine/<int:pk>/edit', MedicineEditView.as_view(), name="medicine_edit"),
+    path('medicine/type', MedicineTypeListView.as_view(), name="medicine_type_index"),
+    path('medicine/type/create', MedicineTypeCreateView.as_view(), name="medicine_type_create"),
+    path('medicine/type/<int:pk>/edit', MedicineTypeEditView.as_view(), name="medicine_type_edit"),
+    path('medicine/type/<int:pk>/delete', MedicineTypeDeleteView.as_view(), name="medicine_type_delete"),
 
     # Invoice Views URLs
     path('invoice', InvoiceListView.as_view(), name='invoice_index'),

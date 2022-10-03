@@ -1,6 +1,6 @@
 from typing import Any, Dict
-from django.forms import ValidationError
-from clinic_management.models import Medicine
+from django.forms import ModelForm, ValidationError
+from clinic_management.models import Medicine, MedicineType
 from django import forms
 class MedicineCreateForm(forms.ModelForm):
     class Meta:
@@ -41,3 +41,15 @@ class MedicineCreateForm(forms.ModelForm):
         if origin_price and sale_price and origin_price > sale_price:
             raise forms.ValidationError("Sale price must be more than origin price !! This is not charity center")
         return cleaned_data
+
+
+class MedicineTypeForm(ModelForm):
+    class Meta:
+        model = MedicineType
+        exclude = ()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in self.fields.values():
+            field.widget.attrs['class'] = 'form-control'
+

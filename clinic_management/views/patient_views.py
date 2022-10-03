@@ -6,7 +6,7 @@ from django.http import HttpRequest, HttpResponse, HttpResponseRedirect
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.list import ListView
-
+from django.db.models import Q
 from account.models import User
 from account.mixins import RoleRequiredMixin
 from base.views import LoginRequiredView
@@ -54,7 +54,9 @@ class PatientListView(LoginRequiredView, RoleRequiredMixin, ListView):
     def get_queryset(self):
         keyword = self.request.GET.get('q','')
         queryset = super().get_queryset()
-        return queryset.filter(name__contains=keyword).order_by('-created_at')
+        return queryset.filter(
+            Q(name__contains=keyword) | Q(address__contains=keyword) | Q(phone__contains=keyword)
+        ).order_by('-created_at')
 
 class PatientDetailView(RoleRequiredMixin, DetailView):
     roles_required = [ User.UserRole.BASE ]

@@ -46,10 +46,10 @@
                                 <tr>
                                     <td class="col-1">{{ pres.id }}</td>
                                     <td class="col-5">
-                                        <a class="btn btn-primary btn-link btn-sm" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                        <a class="btn btn-primary btn-link btn-sm" data-bs-toggle="collapse" href="#prescription-{{ pres.id }}" role="button" aria-expanded="false" aria-controls="collapseExample">
                                             {{ pres.diagnosis }}
                                         </a>
-                                        <div class="collapse" id="collapseExample">
+                                        <div class="collapse" id="prescription-{{ pres.id }}">
                                             <div class="card card-body">
                                                 <table class="table">
                                                     <thead>
