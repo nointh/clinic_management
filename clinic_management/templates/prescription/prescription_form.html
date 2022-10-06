@@ -109,7 +109,7 @@
         medicineNameDiv.className = 'col-3'
 
         medicineUsageInput = document.createElement('input')
-        medicineUsageInput.type = 'text'                
+        medicineUsageInput.type = 'text'
         medicineUsageInput.value = medicine.usage
         medicineUsageInput.name = 'medicine-usages'
         medicineUsageInput.placeholder = "Usage"
@@ -124,6 +124,7 @@
         medicineDosageInput.placeholder = "Number"
         medicineDosageInput.className = 'form-control'
         medicineDosageInput.required = true
+        medicineDosageInput.min = 1
 
         
 
@@ -144,7 +145,7 @@
         deleteDiv.innerHTML = '<i class="fa-solid fa-trash"></i>'
         deleteDiv.style.cursor = 'pointer'
         deleteDiv.addEventListener('click', (event) => {
-            event.target.parentElement.remove()
+            event.currentTarget.parentElement.remove()
         })
 
         preDiv.append(medicineIdInput)

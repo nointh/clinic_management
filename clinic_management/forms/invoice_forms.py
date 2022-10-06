@@ -1,6 +1,9 @@
+from typing import Any
+from django import forms
 from django.forms import ModelForm
 from clinic_management.models import Invoice, InvoiceDetail
-
+from django.core.exceptions import ValidationError
+from django import forms
 class InvoiceCreateOrEditForm(ModelForm):
     class Meta:
         model = Invoice
@@ -17,3 +20,29 @@ class InvoiceDetailForm(ModelForm):
         super().__init__(*args, **kwargs)
         for field in self.fields.values():
             field.widget.attrs['class'] = 'form-control'
+
+class MultipleValueWidget(forms.NumberInput):
+    def value_from_datadict(self, data, files, name):
+        return data.getlist(name)
+
+
+class MultipleValueField(forms.Field):
+    widget = MultipleValueWidget
+
+
+def clean_int(x):
+    try:
+        return int(x)
+    except ValueError:
+        raise ValidationError("Cannot convert to integer: {}".format(repr(x)))
+
+
+class MultipleIntField(MultipleValueField):
+    def clean(self, value):
+        return [clean_int(x) for x in value]
+
+
+class InvoiceFullForm(InvoiceCreateOrEditForm):
+    medicine_ids = MultipleIntField()
+    medicine_unit_prices = MultipleIntField()
+    medicine_quantities = MultipleIntField()

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views import View
-from django.http import HttpResponse, JsonResponse
+from django.http import Http404, HttpResponse, JsonResponse
 from django.core import serializers
 from django.shortcuts import get_object_or_404
 from django.forms.models import model_to_dict
@@ -106,4 +106,24 @@ class PatientValidationFormView(View):
         return JsonResponse({
             "__field_name__": field_name,
             "errors": errors,
+        })
+
+class MedicineQuantityValidationView(View):
+    def post(self, request, pk):
+        medicine_id = pk
+        quantity = request.POST.get('quantity')
+        print('Quantity')
+        print(quantity)
+        if not medicine_id or not quantity:
+            raise Http404
+        medicine = get_object_or_404(Medicine, pk=medicine_id)
+        print('medicine stock quantity ')
+        print(medicine.name)
+        print(medicine.stock_quantity)
+        if int(quantity) > medicine.stock_quantity:
+            return JsonResponse({
+                'errors': f'Quantity of {medicine.name } reachs its max value'
+            })
+        return JsonResponse({
+            'errors': ''
         })

@@ -52,13 +52,9 @@ class PrescriptionDetailView(RoleRequiredMixin, View):
     def post(self, request, pk):
         prescription = Prescription.objects.get(pk=pk)
         form = PrescriptionForm(request.POST, instance=prescription)
-        print(request.POST)
         medicine_ids =  request.POST.getlist('medicine-ids')
         medicine_numbers = request.POST.getlist('medicine-numbers')
         medicine_usages = request.POST.getlist('medicine-usages')
-        print(medicine_ids)
-        print(medicine_numbers)
-        print(medicine_usages)
         service = PrescriptionService()
         if service.edit_prescription_and_detail(form, medicine_ids=medicine_ids, medicine_numbers=medicine_numbers, medicine_usages=medicine_usages):
 
@@ -96,13 +92,9 @@ class PrescriptionCreateView(RoleRequiredMixin, View):
         username = request.user.username
 
         form = PrescriptionForm(request.POST)
-        print(request.POST)
         medicine_ids = [i for i in request.POST.getlist('medicine-ids')]
         medicine_numbers = [i for i in request.POST.getlist('medicine-numbers')]
         medicine_usages = [i for i in request.POST.getlist('medicine-usages')]
-        print(medicine_ids)
-        print(medicine_numbers)
-        print(medicine_usages)
         service = PrescriptionService()
         if service.create_prescription_and_detail(form, username, medicine_ids=medicine_ids, medicine_numbers=medicine_numbers, medicine_usages=medicine_usages):
 
@@ -127,13 +119,9 @@ class PrescriptionEditView(RoleRequiredMixin, View):
     def post(self, request, pk):
         prescription = Prescription.objects.get(pk=pk)
         form = PrescriptionForm(request.POST, instance=prescription)
-        print(request.POST)
         medicine_ids =  request.POST.getlist('medicine-ids')
         medicine_numbers = request.POST.getlist('medicine-numbers')
         medicine_usages = request.POST.getlist('medicine-usages')
-        print(medicine_ids)
-        print(medicine_numbers)
-        print(medicine_usages)
         service = PrescriptionService()
         if service.edit_prescription_and_detail(form, medicine_ids=medicine_ids, medicine_numbers=medicine_numbers, medicine_usages=medicine_usages):
 
@@ -152,8 +140,6 @@ class PrescriptionDeleteView(RoleRequiredMixin, DeleteView):
 
     def form_valid(self, form):
         success_url = self.get_success_url()
-        print('here im soft delete in form valid')
-        print(self.object)
         self.object.soft_delete()
         return HttpResponseRedirect(success_url)
 
@@ -171,7 +157,6 @@ class PrescriptionPrintView(RoleRequiredMixin, View):
         result = io.BytesIO()
         # pdf = pisa.pisaDocument(io.BytesIO(html.encode("UTF-16")), result)
         pdf = pisa.pisaDocument(io.BytesIO(html.encode("utf-8")), result, encoding='utf-8')
-        print(pdf)
         if not pdf.err:
             return HttpResponse(result.getvalue(), content_type='application/pdf; encoding="utf-8"')
         return None

@@ -14,7 +14,7 @@ from account.mixins import RoleRequiredMixin
 from account.models import User
 from clinic_management.models import Invoice
 from clinic_management.services.invoice_services import InvoiceService
-from clinic_management.forms.invoice_forms import InvoiceCreateOrEditForm
+from clinic_management.forms.invoice_forms import InvoiceCreateOrEditForm, InvoiceFullForm
 
 class InvoiceListView(RoleRequiredMixin, ListView):
     roles_required = [ User.UserRole.BASE ]
@@ -174,3 +174,17 @@ class InvoicePrintView(RoleRequiredMixin, View):
         if not pdf.err:
             return HttpResponse(result.getvalue(), content_type='application/pdf; encoding="utf-8"')
         return None
+class InvoiceFullFormView(View):
+    model = Invoice
+    def get(self, request):
+        form = InvoiceFullForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'invoice/invoice_form.html', context=context)
+    def post(self, request):
+        form = InvoiceFullForm(request.POST)
+        context = {
+            'form': form,
+        }
+        return render(request, 'invoice/invoice_form.html', context=context)
