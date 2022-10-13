@@ -25,8 +25,9 @@ SECRET_KEY = 'django-insecure-$z&7@9b$2yy#dsmqmkoseeuzr0(^csk2#7zzsb5t@tdu&d-(v^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['clinic-webapp-mng.herokuapp.com/']
+ALLOWED_HOSTS = ['https://clinic-webapp-mng.herokuapp.com/']
 
+CSRF_TRUSTED_ORIGINS = ["https://clinic-webapp-mng.herokuapp.com/"]
 
 # Application definition
 
