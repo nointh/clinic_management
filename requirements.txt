@@ -41,3 +41,4 @@ urllib3==1.26.12
 webencodings==0.5.1
 whitenoise==6.2.0
 xhtml2pdf==0.2.8
+django-cors-headers==3.13.0

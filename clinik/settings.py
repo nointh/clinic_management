@@ -25,9 +25,13 @@ SECRET_KEY = 'django-insecure-$z&7@9b$2yy#dsmqmkoseeuzr0(^csk2#7zzsb5t@tdu&d-(v^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['linic-webapp-mng.herokuapp.com/']
+ALLOWED_HOSTS = ['clinic-webapp-mng.herokuapp.com/']
 
-CSRF_TRUSTED_ORIGINS = ["https://clinic-webapp-mng.herokuapp.com/"]
+CORS_ORIGIN_WHITELIST = (
+  'https://clinic-webapp-mng.herokuapp.com',
+)
+
+CSRF_TRUSTED_ORIGINS = ["https://clinic-webapp-mng.herokuapp.com"]
 
 # Application definition
 
@@ -38,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'xhtml2pdf',
     # 'patient',
     # 'medicine',
@@ -59,6 +64,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'clinik.urls'
