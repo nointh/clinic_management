@@ -1,33 +1,34 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 <div class="container d-flex justify-content-center">
     <div class="card ml-8 w-100 p-3">
         <div class="card-header">
-            <h3 class="text-center">GENERAL REPORT</h3> 
+            <h3 class="text-center">MEDICINE SALE REPORT</h3> 
         </div>
         <div class="card-body">
-            
-            <form action="{% url 'report:general' %}">
+
+            <form action="{% url 'report:medicine' %}">
                 <!-- <select name="report" id="report-type">
-                    <option value="general"><a href="{% url 'report:general' %}">Aggregate report</a></option>
-                    <option value="revenue-chart"><a href="{% url 'report:revenue' %}">Revenue chart</a> </option>
+                    <option value="general">Aggregate report</option>
+                    <option value="revenue-chart">Revenue chart</option>
                     <option value="invoice-detail">Medicine revenue</option>
                     <option value="most-used-medicine">Most used medicine</option>
                 </select> -->
-                <select name="by" id="">
+                <!-- <select name="by" id="">
                     <option value="date" {% if by == 'date' %}selected{% endif %}>By date</option>
                     <option value="month" {% if by == 'month' %}selected{% endif %}>By month</option>
                     <option value="year" {% if by == 'year' %}selected{% endif %}>By year</option>
-                </select>
-                <input type="date" name="from"
+                </select> -->
+                <input type="date" name="from" required 
                 {% if from_date %} value="{{ from_date|date:'Y-m-d'}}" 
                 {% else %} value="{{ now|date:'Y-m-d'}}" 
-                {% endif %} >
-                <input type="date" name="to"
-                {% if to_date %}  value="{{ to_date|date:'Y-m-d'}}" 
+                {% endif %}>
+                <input type="date" name="to" required 
+                {% if from_date %} value="{{ from_date|date:'Y-m-d'}}" 
                 {% else %} value="{{ now|date:'Y-m-d'}}" 
-                {% endif %}  >
+                {% endif %}>
                 <input type="submit">
             </form>
             {% if data|length ==  0 %}
@@ -36,25 +37,20 @@
 
             <table class="table">
                 <thead>
-                    <th>Date</th>
-                    <th>Number of prescription</th>
-                    <th>Number of invoice</th>
-                    <th>Invoice total</th>
+                    <th>Medicine ID</th>
+                    <th>Medicine name</th>
+                    <th>Unit</th>
+                    <th>SALE AMOUNT</th>
+                    <th>Total</th>
                 </thead>
                 <tbody>
-                    {% for aggr in data %}
+                    {% for med in data %}
                     <tr>
-                        <td> {% if by == 'month' %}
-                            {{ aggr.month }}
-                            {% elif by == 'year' %}
-                            {{ aggr.year }}
-                            {% else %}
-                            {{aggr.created_at__date|date:'d/n/Y'}}
-                            {% endif %}
-                        </td>
-                        <td>{{aggr.prescription_count}}</td>
-                        <td>{{aggr.invoice_count}}</td>
-                        <td>{{aggr.total}}</td>
+                        <td>{{med.medicine__id}}</td>
+                        <td>{{med.medicine__name}}</td>
+                        <td>{{med.medicine__unit}}</td>
+                        <td>{{med.count}}</td>
+                        <td>{{med.total | floatformat:"0"}} VNĐ</td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -62,8 +58,9 @@
             {% endif %}
             <div>
                 See other report:   <a href="{% url 'report:revenue' %}">Revenue chart</a>, 
-                <a href="{% url 'report:medicine' %}">Medicine sales report</a>
+                <a href="{% url 'report:general' %}">General report</a>
             </div>
+
         </div>
     </div>
 </div>

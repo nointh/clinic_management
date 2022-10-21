@@ -1,24 +1,41 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="{% url 'report:general' %}">
-        <select name="report" id="report-type">
-            <option value="general">Aggregate report</option>
-            <option value="revenue-chart">Revenue chart</option>
-            <option value="invoice-detail">Medicine revenue</option>
-            <option value="most-used-medicine">Most used medicine</option>
-        </select>
-        <select name="by" id="">
-            <option value="date">By date</option>
-            <option value="month">By month</option>
-            <option value="year">By year</option>
-        </select>
-        <input type="date" name="from">
-        <input type="date" name="to">
-        <input type="submit">
-    </form>
-    <div> this is the charts</div>
-    <canvas id="revenueChart" width="400" height="400"></canvas>
+<div class="container d-flex justify-content-center">
+    <div class="card ml-8 w-100 p-3">
+        <div class="card-header">
+            <h3 class="text-center">REVENUE CHART</h3> 
+        </div>
+        <div class="card-body">
+            <form action="{% url 'report:revenue' %}">
+                <select name="by" id="">
+                    <option value="date" {% if by == 'date' %}selected{% endif %}>By date</option>
+                    <option value="month" {% if by == 'month' %}selected{% endif %}>By month</option>
+                    <option value="year" {% if by == 'year' %}selected{% endif %}>By year</option>
+                </select>
+                <input type="date" name="from" required 
+                {% if from_date %} value="{{ from_date|date:'Y-m-d'}}" 
+                {% else %} value="{{ now|date:'Y-m-d'}}" 
+                {% endif %} >
+                <input type="date" name="to" required 
+                {% if from_date %} value="{{ to_date|date:'Y-m-d'}}" 
+                {% else %} value="{{ now|date:'Y-m-d'}}" 
+                {% endif %}>
+                <input type="submit">
+            </form>
+            {% if data|length ==  0 %}
+            <h4 class="text-center m-5">Sorry there is no data available on this date range</h4>
+            {% else %}
+            <canvas class="mt-2" id="revenueChart" width="100%" height="50"></canvas>
+            {% endif %}
+            <div class="mt-4">
+                See other report:   <a href="{% url 'report:medicine' %}">Medicine report</a>, 
+                <a href="{% url 'report:general' %}">General report</a>
+            </div>
+
+        </div>
+    </div>
+</div>
     {% endblock %}
 
 
@@ -27,7 +44,7 @@
     <script>
         const ctx = document.getElementById('revenueChart').getContext('2d');
         let chart = new Chart(ctx, {
-            type: 'line',
+            type: '{% if by == "month" or by == "year" %}bar{% else %}line{% endif %}',
             data: {
                 datasets: [{
                     label: 'Revenue',
@@ -35,19 +52,38 @@
                     borderColor: 'rgb(75, 192, 192)',
                     tension: 0.1,
                     data: [
-                        {% for row in data %}
-                            {
-                            x: '{{row.created_at__date|date:"Y-m-d"}} 00:00:00',
-                            y: parseFloat("{{row.total}}".replace(',', ''))
-                            },
-                        {% endfor %}
+                        {% if by == 'month' %}
+                            {% for row in data %}
+                                {
+                                x: '{{row.month}}',
+                                y: parseFloat("{{row.total}}".replace(',', ''))
+                                },
+                            {% endfor %}
+                        {% elif by == 'year' %}
+                            {% for row in data %}
+                                    {
+                                    x: '{{row.year}}',
+                                    y: parseFloat("{{row.total}}".replace(',', ''))
+                                    },
+                            {% endfor %}
+                        {% else %}
+                            {% for row in data %}
+                                {
+                                x: '{{row.created_at__date|date:"Y-m-d"}}',
+                                y: parseFloat("{{row.total}}".replace(',', ''))
+                                },
+                            {% endfor %}
+                        {% endif %}
                     ]
                 }],
             },
             options: {
                 scales: {
                     x: {
-                        min: '{{min|date:"Y-m-d"}} 00:00:00',
+                        {% if by != 'month' and by != 'year'%}
+                        
+                        min: '{{from_date|date:"Y-m-d"}}',
+                        {% endif %}
                         // max: '{{max|date:"Y-m-d"}} 00:00:00',
                         // min: '2022-09-01 00:00:00',
                     },
