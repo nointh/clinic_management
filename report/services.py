@@ -125,7 +125,7 @@ class ReportService:
         print(oldest_invoice_date)
         print(latest_invoice_date)
         current_date = oldest_invoice_date
-        while (current_date.date() != (latest_invoice_date + timedelta(days=1)).date()):
+        while (current_date <= (latest_invoice_date + timedelta(days=1))):
             if datetime.strftime(current_date, '%Y-%m-%d') in date_dict.keys():
                 result_list.append({'created_at__date': datetime.combine(current_date.date(), datetime.min.time()), 'total': date_dict[current_date.strftime('%Y-%m-%d')]})
             else:
