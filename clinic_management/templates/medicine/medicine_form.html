@@ -18,7 +18,7 @@
 
             {% csrf_token %}
             {{ form.as_div }}
-            <button type="submit" class="btn btn-primary">ADD</button>
+            <button type="submit" class="btn btn-primary">{% if action == 'edit' %}EDIT{% else %}ADD{% endif %}</button>
             <a href="{% url 'clinic_management:medicine_index' %}" class="btn btn-danger">BACK</a>
 
           </form>
