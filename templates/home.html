@@ -1,18 +1,93 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<p>This is the home page</p>
 
 
+<div class="container">
+  <div class="card ml-8 w-100 p-3 row">
+      <div class="card-header">
+        <h3 class="text-center">WELCOME TO CLINIC DASHBOARD</h3> 
+        {% if user.is_authenticated %}
+        Welcome back, {{ user.role }} {{ user.name }}
+        {% else %}
+        Please log in to access all features of clinic management website.
+        <h5>Log in here: <a href="{% url 'login' %}" class="btn btn-primary btn-link">LOGIN</a></h5>
+        {% endif %}
+      </div>
+  </div>
+  {% if user.is_authenticated %}
+  <div class="row">
+    <div class="col-4">
+      <div class="card p-3 border-1">
+        <h3 class="card-header card-header-warning">PATIENTS</h3>
+        <div class="card-body">
+          <h5 class="card-title">Number of patients: <b>{{ patient_count}}</b></h5>
+          <h5 class="card-title">New patients today: <b>{{ today_new_patient_count }}</b></h5>
+          <a href="{% url 'clinic_management:patient_index' %}" class="btn btn-primary">Link to patients page</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card p-3">
+        <h3 class="card-header card-header-warning">MEDICINE</h3>
+        <div class="card-body">
+          <h5 class="card-title">Number of medicine: <b>{{ medicine_count }}</b></h5>
+          <h5 class="card-title">Number of medicine type: <b>{{ medicine_type_count }}</b></h5>
+          <a href="{% url 'clinic_management:medicine_index' %}" class="btn btn-primary">Link to medicine page</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-4">
+      <div class="card p-3">
+        <h3 class="card-header card-header-warning">PRESCRIPTION</h3>
+        <div class="card-body">
+          <h5 class="card-title">Number of prescription: <b>{{ prescription_count }}</b></h5>
+          <h5 class="card-title">New prescription today: <b>{{ today_new_prescription_count }}</b></h5>
+          <a href="{% url 'clinic_management:prescription_index' %}" class="btn btn-primary">Link to prescription page</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="card p-3 border-1">
+        <h3 class="card-header card-header-warning">INVOICE</h3>
+        <div class="card-body">
+          <h5 class="card-title">Number of invoices: <b>{{ invoice_count}}</b></h5>
+          <h5 class="card-title">New invoices today: <b>{{ today_invoice_count }}</b></h5>
+          <h5 class="card-title">Today's revenue: <b>{{ today_invoice_total }}</b></h5>
+          <a href="{% url 'clinic_management:invoice_index' %}" class="btn btn-primary">Link to invoice page</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="card p-3">
+        <h3 class="card-header card-header-warning">TOP PAID PATIENTS</h3>
+        <div class="card-body">
+          <table class="table">
+            <thead>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Revenue</th>
+            </thead>
+            <tbody>
+              {% for patient in top_paid_patient%}
+              <tr>
+                <td>{{patient.id}}</td>
+                <td>{{patient.name}}</td>
+                <td>{{patient.total}}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <p><a href="{% url 'logout' %}">Log Out</a></p> -->
+  {% endif %}
 
-
-{% if user.is_authenticated %}
-  Hi {{ user.username }}! I have {{ user.role }} role
-  <p><a href="{% url 'logout' %}">Log Out</a></p>
-{% else %}
-  <p>You are not logged in</p>
-  <a href="{% url 'login' %}">Log In</a>
-{% endif %}
+</div>
 
 
 {% endblock %}

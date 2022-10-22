@@ -4,4 +4,4 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 class LoginRequiredView(LoginRequiredMixin):
-    login_url: Any = 'login'
+    login_url: Any = '/login'

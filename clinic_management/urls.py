@@ -1,4 +1,5 @@
 from django.urls import path
+from clinic_management.views.home_views import HomeView
 from clinic_management.views.patient_views import PatientCreateView, PatientListView, PatientDetailView, PatientEditView, PatientDeleteView
 from clinic_management.views.medicine_views import MedicineListView, MedicineCreateView, MedicineDeleteView, MedicineDetailView, MedicineEditView, MedicineTypeCreateView, MedicineTypeDeleteView, MedicineTypeEditView, MedicineTypeListView
 from clinic_management.views.invoice_views import InvoiceFullFormView, InvoiceListView, InvoiceCreateView, InvoiceDeleteView, InvoiceDetailView, InvoiceEditView, InvoicePrintView
